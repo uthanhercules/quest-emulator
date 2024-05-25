@@ -1,0 +1,85 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "VT323", monospace;
+  font-size: 44px;
+  user-select: none;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  color: #f3f3f3;
+}
+
+h1 {
+  font-size: 44px;
+}
+
+.screen {
+  padding: 16px;
+  height: 80%;
+  aspect-ratio: 4/3;
+  background-color: #111;
+  border-radius: 16px;
+}
+
+button {
+  cursor: pointer;
+  padding: 10px;
+  margin: 8px;
+  font-size: 14px;
+  background-color: #020202;
+  color: #f3f3f3;
+  border: 1px solid #f3f3f3;
+  border-radius: 8px;
+  z-index: 3;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+}
+
+.pinput-box {
+  display: flex;
+  align-items: center;
+}
+
+.pinput {
+  width: 100%;
+  padding-left: 16px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 44px;
+  color: #f3f3f3;
+  text-align: justify;
+}
+
+/* CRT Effect */
+.crt::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+    linear-gradient(
+      90deg,
+      rgba(255, 0, 0, 0.06),
+      rgba(0, 255, 0, 0.02),
+      rgba(0, 0, 255, 0.06)
+    );
+  z-index: 2;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+}

@@ -1,0 +1,10 @@
+1 SET choice$ = ""
+10 PRINT "Olá, mundo!"
+20 PRINT ""
+30 INPUT choice$
+31 IF [choice$] FIRST = "S" THEN 40 ELSE 50
+40 PRINT "Você é Julio!"
+41 PRINT ""
+42 GOTO 60
+50 PRINT "Você não é Julio!"
+60 END
