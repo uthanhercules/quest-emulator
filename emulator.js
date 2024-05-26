@@ -38,6 +38,7 @@ function startGame() {
 function gameLoop() {
   for (let i = curLn; i < game.length; i++) {
     const curBlock = game[i];
+    curLn = i;
 
     switch (curBlock.cmd) {
       case "SET":
@@ -68,14 +69,12 @@ function gameLoop() {
         curLn++;
         break;
       case "IF":
-        curLn = handleCond(curBlock);
-        i = curLn - 1;
+        curLn = handleCond(curBlock) - 1;
+        i = curLn;
         break;
       case "GOTO":
         curLn = goto(curBlock.value);
-        curLn -= 1;
         i = curLn;
-
       default:
         break;
     }
@@ -125,13 +124,13 @@ function handleCond(block) {
 }
 
 function goto(ln) {
-  const i = game.findIndex((b) => b.ln === ln);
+  const i = game.findIndex((b) => b.ln === ln) - 1;
 
-  if (i === -1) {
+  if (i <= -2) {
     throw new Error(`Invalid GOTO command on pointer ${curLn}`);
   }
 
-  return i;
+  return i < 0 ? 0 : i;
 }
 
 function op(v, op, r, f) {
@@ -163,7 +162,7 @@ function op(v, op, r, f) {
 }
 
 function input() {
-  waitOn = curLn;
+  waitOn = curLn + 1;
 
   const emulator = document.getElementById("emulator");
   const div = document.createElement("div");
@@ -175,10 +174,12 @@ function input() {
   input.id = "input";
   input.className = "pinput";
   input.autocomplete = "off";
+  input.value = "";
 
   div.appendChild(input);
   emulator.appendChild(div);
 
+  input.value = "";
   input.focus();
   input.onkeydown = (e) => {
     if (e.key === "Enter" && input.value !== "") {
@@ -194,11 +195,10 @@ function input() {
       }
 
       handleVM(varName, val);
-      input.value = "";
       input.remove();
       cls();
 
-      curLn = waitOn + 1;
+      curLn = waitOn;
       waitOn = null;
 
       gameLoop();
