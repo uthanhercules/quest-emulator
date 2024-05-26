@@ -221,8 +221,7 @@ function render(val) {
   if (txtToRender === "") {
     // Render break line
     const div = document.createElement("div");
-    const br = document.createElement("br");
-    div.appendChild(br);
+    div.className = "break-line";
     emulator.appendChild(div);
 
     return;

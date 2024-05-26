@@ -1,9 +1,9 @@
-10 PRINT "O ENIGMA DA ETERNIDADE"
+10 PRINT "NOME DO GAME"
 11 PRINT ""
 12 PRINT ""
-13 PRINT "a"
+13 PRINT ""
 14 PRINT ""
 15 PRINT ""
-16 PRINT "Escrito por"
-17 PRINT "Programado por"
+16 PRINT "Escrito Henrique Dias"
+17 PRINT "Programado por Uthan Hércules"
 18 END

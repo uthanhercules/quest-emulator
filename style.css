@@ -33,6 +33,10 @@ h1 {
   flex-direction: column;
 }
 
+.break-line {
+  height: 44px;
+}
+
 button {
   cursor: pointer;
   padding: 10px;
