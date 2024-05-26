@@ -42,23 +42,30 @@ function gameLoop() {
     switch (curBlock.cmd) {
       case "SET":
         handleVM(curBlock.varName, curBlock.initVal);
+        curLn++;
         break;
       case "PRINT":
         render(curBlock.value);
+        curLn++;
         break;
       case "CLS":
         cls();
+        curLn++;
         break;
       case "END":
         endGame();
+        curLn = game.length;
+        i = curLn;
         break;
       case "WAIT":
         wait(i);
         i = game.length;
+        curLn++;
         break;
       case "INPUT":
         input();
         i = game.length;
+        curLn++;
         break;
       case "IF":
         curLn = handleCond(curBlock);
@@ -66,12 +73,12 @@ function gameLoop() {
         break;
       case "GOTO":
         curLn = goto(curBlock.value);
-        i = curLn - 1;
+        curLn -= 1;
+        i = curLn;
+
       default:
         break;
     }
-
-    curLn++;
   }
 }
 
@@ -102,10 +109,17 @@ function renderVars(str) {
 }
 
 function handleCond(block) {
+  waitOn = curLn;
   const v = vm[block.vName];
   const r = op(v, block.operator, block.opTo, block.firstOnly);
   const out = r ? block.onTrue : block.onFalse;
-  const i = game.findIndex((b) => b.ln === out);
+  let i = 0;
+
+  if (!block.onFalse && !r) {
+    i = curLn + 1;
+  } else {
+    i = game.findIndex((b) => b.ln === out);
+  }
 
   return i;
 }
@@ -122,21 +136,30 @@ function goto(ln) {
 
 function op(v, op, r, f) {
   const c = f ? v[0] : v;
+  let out = false;
 
   switch (op) {
     case "=":
-      return c === r;
+      out = c === r;
+      break;
     case "<":
-      return c < r;
+      out = c < r;
+      break;
     case ">":
-      return c > r;
+      out = c > r;
+      break;
     case "<=":
-      return c <= r;
+      out = c <= r;
+      break;
     case ">=":
-      return c >= r;
+      out = c >= r;
+      break;
     case "<>":
-      return c !== r;
+      out = c !== r;
+      break;
   }
+
+  return out;
 }
 
 function input() {
