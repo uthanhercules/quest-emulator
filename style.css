@@ -29,6 +29,8 @@ h1 {
   background-color: #111;
   border-radius: 16px;
   text-align: justify;
+  display: flex;
+  flex-direction: column;
 }
 
 button {
