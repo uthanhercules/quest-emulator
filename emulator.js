@@ -174,13 +174,17 @@ function input() {
   input.id = "input";
   input.className = "pinput";
   input.autocomplete = "off";
-  input.value = "";
+  input.placeholder = "Digite algo...";
+  input.disabled = true;
 
   div.appendChild(input);
   emulator.appendChild(div);
 
-  input.value = "";
-  input.focus();
+  setTimeout(() => {
+    input.disabled = false;
+    input.focus();
+  }, 100);
+
   input.onkeydown = (e) => {
     if (e.key === "Enter" && input.value !== "") {
       const varName = game[curLn - 1].varName;
@@ -211,10 +215,10 @@ function wait(i) {
   paused = true;
 
   render("");
-  render("PRESSIONE ESPAÇO PARA CONTINUAR...");
+  render("PRESSIONE ESPAÇO PARA CONTINUAR...", "wait");
 }
 
-function render(val) {
+function render(val, wait) {
   const txtToRender = renderVars(val);
   const emulator = document.getElementById("emulator");
 
@@ -230,6 +234,11 @@ function render(val) {
   // Render text
   const span = document.createElement("span");
   span.innerHTML = txtToRender;
+
+  if (wait) {
+    span.className = "wait";
+  }
+
   emulator.appendChild(span);
 }
 

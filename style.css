@@ -37,6 +37,10 @@ h1 {
   height: 44px;
 }
 
+.wait {
+  color: #737673;
+}
+
 button {
   cursor: pointer;
   padding: 10px;
