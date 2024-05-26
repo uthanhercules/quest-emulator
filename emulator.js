@@ -220,10 +220,10 @@ function render(val) {
 
   if (txtToRender === "") {
     // Render break line
+    const div = document.createElement("div");
     const br = document.createElement("br");
-    const br2 = document.createElement("br");
-    emulator.appendChild(br);
-    emulator.appendChild(br2);
+    div.appendChild(br);
+    emulator.appendChild(div);
 
     return;
   }

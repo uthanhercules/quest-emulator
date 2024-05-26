@@ -1,11 +1,9 @@
-1 SET CHOICE$ = ""
-9 CLS
-10 PRINT "Uma forte dor de cabeça junto a uma súbita tontura te faz ficar tonto. Repentinamente você já não está mais em frente a QUEOPS."
-20 PRINT ""
-30 PRINT "O local é sufocante, quase claustrofóbico, escuro e com um odor de mofo excruciante. Nas paredes imagens que voce não consegue ver devido a baixa luminosidade. Pensando consigo, você lembra eu posso simplesmente 'LIGAR A LANTERNA'"
-40 PRINT ""
-50 INPUT CHOICE$
-60 IF [CHOICE$] <> "LIGAR" THEN 9 ELSE 70
-70 CLS
-80 PRINT "Ao ligar a lanterna voce ve um correrdor nao muito longo a sua frente com duas entradas a esquerda e a direita. Nas paredes, uma sequencia de imagens de algo que parece contar uma historia"
-90 END
+10 PRINT "O ENIGMA DA ETERNIDADE"
+11 PRINT ""
+12 PRINT ""
+13 PRINT "a"
+14 PRINT ""
+15 PRINT ""
+16 PRINT "Escrito por"
+17 PRINT "Programado por"
+18 END
