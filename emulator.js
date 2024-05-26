@@ -188,7 +188,7 @@ function input() {
   input.onkeydown = (e) => {
     if (e.key === "Enter" && input.value !== "") {
       const varName = game[curLn - 1].varName;
-      let val = input.value;
+      let val = input.value.toUpperCase();
 
       if (!varName.includes("$")) {
         val = Number(val);
