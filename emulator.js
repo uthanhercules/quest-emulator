@@ -75,10 +75,20 @@ function gameLoop() {
       case "GOTO":
         curLn = goto(curBlock.value);
         i = curLn;
+      case "EXPR":
+        const expr = renderVars(curBlock.value);
+        const calc = calculate(expr);
+        handleVM(curBlock.vOutput, calc);
+        curLn++;
+        break;
       default:
         break;
     }
   }
+}
+
+function calculate(expr) {
+  return new Function("return " + expr)();
 }
 
 function handleVM(key, val) {
@@ -398,6 +408,17 @@ function parseTokens(tokens, pureStr) {
       case "GOTO":
         acc.push({ ln: Number(ln), cmd, value: Number(rest.join(" ")) });
         break;
+      case "EXPR":
+        acc.push({
+          ln: Number(ln),
+          cmd,
+          value: rest
+            .join(" ")
+            .match(/"(.*?)"/g)[0]
+            .replace(/"/g, ""),
+          vOutput: rest[rest.length - 1],
+        });
+        break;
     }
   }
 
@@ -415,6 +436,7 @@ function validateTokens(ln, cmd, value, i, pureStr) {
     "CLS",
     "END",
     "GOTO",
+    "EXPR",
   ];
 
   // GENERAL

@@ -35,6 +35,14 @@ Renderiza um texto em tela. É possível imprimir variáveis ao colocá-las entr
 0 PRINT "Olá, mundo!" [ALINHAMENTO?] [#COR?]
 1 PRINT "Olá, [NOME$]" [ALINHAMENTO?] [#COR?]
 
+## [EXPR]
+
+Permite realizar calculos e salvar em uma variável numérica.
+
+## Exemplo
+
+0 EXPR "1+1" VAR
+
 ## [INPUT]
 
 Recebe um input do usuário e armazena em uma variável.
