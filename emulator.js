@@ -291,7 +291,7 @@ function getPrintAlignment(tokens) {
   const hasAlign = alignments.includes(tokens[alignPos]);
 
   if (!hasAlign) {
-    return "LEFT";
+    return "JUSTIFY";
   }
 
   return tokens[alignPos];
