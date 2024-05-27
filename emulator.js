@@ -188,7 +188,7 @@ function input() {
   input.onkeydown = (e) => {
     if (e.key === "Enter" && input.value !== "") {
       const varName = game[curLn - 1].varName;
-      let val = input.value.toUpperCase();
+      let val = input.value.toUpperCase().trim();
 
       if (!varName.includes("$")) {
         val = Number(val);
@@ -255,13 +255,8 @@ function endGame() {
 // Parser
 function questsl(input) {
   try {
-    console.time("tokenize");
     const tokens = tokenize(input);
-    console.timeEnd("tokenize");
-
-    console.time("parse");
     const program = parseTokens(tokens, input);
-    console.timeEnd("parse");
 
     return program;
   } catch (err) {
@@ -332,14 +327,17 @@ function parseTokens(tokens, pureStr) {
         const firstOnly = rest.includes("FIRST");
         const ifVName = rest[0].replace("[", "").replace("]", "");
         const operator = firstOnly ? rest[2] : rest[1];
-        const opTo = (firstOnly ? rest[3] : rest[2]).replace(/"/g, "");
-        const onTrue = firstOnly ? Number(rest[5]) : Number(rest[4]);
+        const opTo = rest
+          .join(" ")
+          .match(/"(.*?)"/g)[0]
+          .replace(/"/g, "");
+        const onTrue = Number(rest[rest.indexOf("THEN") + 1]);
         const hasElse = rest.includes("ELSE");
         const isString = ifVName.includes("$");
         let onFalse = null;
 
         if (hasElse) {
-          onFalse = firstOnly ? Number(rest[7]) : Number(rest[6]);
+          onFalse = Number(rest[rest.indexOf("ELSE") + 1]);
         }
 
         acc.push({
@@ -444,13 +442,13 @@ function validateTokens(ln, cmd, value, i, pureStr) {
     const firstOnly = value.includes("FIRST");
     const varName = value[0].replace("[", "").replace("]", "");
     const operator = firstOnly ? value[2] : value[1];
-    const opTo = firstOnly ? value[3] : value[2];
-    const onTrue = firstOnly ? Number(value[5]) : Number(value[4]);
+    const opTo = value.join(" ").match(/"(.*?)"/g)[0];
+    const onTrue = Number(value[value.indexOf("THEN") + 1]);
     const hasElse = value.includes("ELSE");
     let onFalse = null;
 
     if (hasElse) {
-      onFalse = firstOnly ? Number(value[7]) : Number(value[6]);
+      onFalse = Number(value[value.indexOf("ELSE") + 1]);
     }
 
     if (!operators.includes(operator)) {
