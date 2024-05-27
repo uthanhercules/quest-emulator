@@ -349,8 +349,7 @@ function parseTokens(tokens, pureStr) {
         acc.push({
           ln: Number(ln),
           cmd,
-          alignment:
-            rest[rest.length - 1] !== "WAIT" ? rest[rest.length - 1] : LEFT,
+          alignment: "CENTER",
         });
         break;
       case "REM":

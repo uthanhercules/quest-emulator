@@ -47,7 +47,7 @@ Exemplo:
 Recebe um input qualquer do usuário e não armazena em uma variável.
 
 Exemplo:
-0 WAIT [ALINHAMENTO?]
+0 WAIT
 
 ## [REM]
 
