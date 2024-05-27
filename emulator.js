@@ -75,6 +75,7 @@ function gameLoop() {
       case "GOTO":
         curLn = goto(curBlock.value);
         i = curLn;
+        break;
       case "EXPR":
         const expr = renderVars(curBlock.value);
         const calc = calculate(expr);
