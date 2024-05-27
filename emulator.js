@@ -46,7 +46,7 @@ function gameLoop() {
         curLn++;
         break;
       case "PRINT":
-        render(curBlock.value);
+        render(curBlock.value, false, curBlock.alignment, curBlock.color);
         curLn++;
         break;
       case "CLS":
@@ -54,12 +54,12 @@ function gameLoop() {
         curLn++;
         break;
       case "END":
-        endGame();
+        endGame(curBlock.alignment);
         curLn = game.length;
         i = curLn;
         break;
       case "WAIT":
-        wait(i);
+        wait(i, curBlock.alignment);
         i = game.length;
         curLn++;
         break;
@@ -210,15 +210,15 @@ function input() {
   };
 }
 
-function wait(i) {
+function wait(i, alignment) {
   waitOn = i;
   paused = true;
 
   render("");
-  render("PRESSIONE ESPAÇO PARA CONTINUAR...", "wait");
+  render("PRESSIONE ESPAÇO PARA CONTINUAR...", true, alignment);
 }
 
-function render(val, wait) {
+function render(val, wait, alignment, color) {
   const txtToRender = renderVars(val);
   const emulator = document.getElementById("emulator");
 
@@ -239,6 +239,14 @@ function render(val, wait) {
     span.className = "wait";
   }
 
+  if (alignment) {
+    span.style.textAlign = alignment;
+  }
+
+  if (color) {
+    span.style.color = color;
+  }
+
   emulator.appendChild(span);
 }
 
@@ -247,9 +255,9 @@ function cls() {
   emulator.innerHTML = "";
 }
 
-function endGame() {
+function endGame(isCentralized) {
   render("");
-  render("FIM");
+  render("FIM", false, isCentralized);
 }
 
 // Parser
@@ -274,6 +282,19 @@ function tokenize(input) {
         .filter((tkn) => tkn !== "")
     )
     .filter((line) => line.length > 0);
+}
+
+function getPrintAlignment(tokens) {
+  const alignments = ["LEFT", "CENTER", "RIGHT"];
+  const hasColor = tokens[tokens.length - 1].includes("#");
+  const alignPos = hasColor ? tokens.length - 2 : tokens.length - 1;
+  const hasAlign = alignments.includes(tokens[alignPos]);
+
+  if (!hasAlign) {
+    return "LEFT";
+  }
+
+  return tokens[alignPos];
 }
 
 function parseTokens(tokens, pureStr) {
@@ -304,7 +325,14 @@ function parseTokens(tokens, pureStr) {
         acc.push({
           ln: Number(ln),
           cmd,
-          value: rest.join(" ").replace(/"/g, ""),
+          alignment: getPrintAlignment(rest),
+          color: rest[rest.length - 1].includes("#")
+            ? rest[rest.length - 1]
+            : null,
+          value: rest
+            .join(" ")
+            .match(/"(.*?)"/g)[0]
+            .replace(/"/g, ""),
         });
         break;
       case "INPUT":
@@ -318,7 +346,12 @@ function parseTokens(tokens, pureStr) {
         });
         break;
       case "WAIT":
-        acc.push({ ln: Number(ln), cmd });
+        acc.push({
+          ln: Number(ln),
+          cmd,
+          alignment:
+            rest[rest.length - 1] !== "WAIT" ? rest[rest.length - 1] : LEFT,
+        });
         break;
       case "REM":
         acc.push({ ln: Number(ln), cmd, value: rest.join(" ") });
@@ -356,7 +389,12 @@ function parseTokens(tokens, pureStr) {
         acc.push({ ln: Number(ln), cmd });
         break;
       case "END":
-        acc.push({ ln: Number(ln), cmd });
+        acc.push({
+          ln: Number(ln),
+          cmd,
+          alignment:
+            rest[rest.length - 1] !== "END" ? rest[rest.length - 1] : "LEFT",
+        });
         break;
       case "GOTO":
         acc.push({ ln: Number(ln), cmd, value: Number(rest.join(" ")) });
