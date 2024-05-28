@@ -80,6 +80,20 @@ Vai para um pointer específico.
 Exemplo:
 0 GOTO 1
 
+## [GOSUB]
+
+Executa uma instrução em um pointer específico.
+
+Exemplo:
+0 GOSUB 100
+
+## [RETURN]
+
+Returna para a linha em que o GOSUB foi chamado.
+
+Exemplo
+0 RETURN
+
 ## [CLS]
 
 Limpa a tela.

@@ -5,6 +5,7 @@ let vm = {};
 let curLn = 0;
 let waitOn = null;
 let paused = false;
+let gosub = null;
 
 // Core
 function loadGame() {
@@ -81,6 +82,16 @@ function gameLoop() {
         const calc = calculate(expr);
         handleVM(curBlock.vOutput, calc);
         curLn++;
+        break;
+      case "GOSUB":
+        gosub = i;
+        curLn = curBlock.to;
+        i = curLn - 2;
+        break;
+      case "RETURN":
+        curLn = gosub;
+        i = curLn;
+        gosub = null;
         break;
       default:
         break;
@@ -422,6 +433,12 @@ function parseTokens(tokens, pureStr) {
           vOutput: rest[rest.length - 1],
         });
         break;
+      case "RETURN":
+        acc.push({ ln: Number(ln), cmd });
+        break;
+      case "GOSUB":
+        acc.push({ ln: Number(ln), cmd, to: Number(rest.join(" ")) });
+        break;
     }
   }
 
@@ -440,6 +457,8 @@ function validateTokens(ln, cmd, value, i, pureStr) {
     "END",
     "GOTO",
     "EXPR",
+    "RETURN",
+    "GOSUB",
   ];
 
   // GENERAL
