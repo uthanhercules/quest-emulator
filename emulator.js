@@ -504,7 +504,11 @@ function validateTokens(ln, cmd, value, i, pureStr) {
     const firstOnly = value.includes("FIRST");
     const varName = value[0].replace("[", "").replace("]", "");
     const operator = firstOnly ? value[2] : value[1];
-    const opTo = value.includes('"')
+    const opTo = firstOnly
+      ? value.includes('"')
+        ? value.join(" ").match(/"(.*?)"/g)[0]
+        : value[3]
+      : value.includes('"')
       ? value.join(" ").match(/"(.*?)"/g)[0]
       : value[2];
     const onTrue = Number(value[value.indexOf("THEN") + 1]);
