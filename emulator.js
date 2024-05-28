@@ -370,10 +370,12 @@ function parseTokens(tokens, pureStr) {
         const firstOnly = rest.includes("FIRST");
         const ifVName = rest[0].replace("[", "").replace("]", "");
         const operator = firstOnly ? rest[2] : rest[1];
-        const opTo = rest
-          .join(" ")
-          .match(/"(.*?)"/g)[0]
-          .replace(/"/g, "");
+        const opTo = rest.join(" ").includes('"')
+          ? rest
+              .join(" ")
+              .match(/"(.*?)"/g)[0]
+              .replace(/"/g, "")
+          : rest[2];
         const onTrue = Number(rest[rest.indexOf("THEN") + 1]);
         const hasElse = rest.includes("ELSE");
         const isString = ifVName.includes("$");
@@ -502,7 +504,9 @@ function validateTokens(ln, cmd, value, i, pureStr) {
     const firstOnly = value.includes("FIRST");
     const varName = value[0].replace("[", "").replace("]", "");
     const operator = firstOnly ? value[2] : value[1];
-    const opTo = value.join(" ").match(/"(.*?)"/g)[0];
+    const opTo = value.includes('"')
+      ? value.join(" ").match(/"(.*?)"/g)[0]
+      : value[2];
     const onTrue = Number(value[value.indexOf("THEN") + 1]);
     const hasElse = value.includes("ELSE");
     let onFalse = null;
